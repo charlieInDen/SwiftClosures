@@ -23,7 +23,7 @@ func test(_ closure: @escaping aliasClosure) -> aliasClosure {
 var returnClosure = test(closureDefinition)
 returnClosure(6)
 
-//Closure that returns value
+//Closure that doesnot returns value
 func test2(_ closure: @escaping aliasClosure) {
      closure(2) //Calling closure definition with arguement - Int (2)
 }
@@ -67,3 +67,35 @@ func testAutoClosure(_ closure: @autoclosure () -> Void) {
     print("testAutoClosure called")
 }
 testAutoClosure(())
+
+//Completion handler
+func doWork(completion:()->()) {
+    print("before calling callback")
+    completion()
+    print("after calling callback")
+}
+
+doWork(completion: {
+    print("call back received")
+})
+
+print("Other statements")
+
+var array = [2,1,3,4,7,6,5]
+//As a function parameter:
+array.sorted(by: { (item1: Int, item2: Int) -> Bool in return item1 < item2 })
+//As a function parameter with implied types:
+array.sorted(by: { (item1, item2) -> Bool in return item1 < item2 })
+//As a function parameter with implied return type:
+array.sorted(by: { (item1, item2) in return item1 < item2 })
+//As the last function parameter:
+array.sorted { (item1, item2) in return item1 < item2 }
+//As the last parameter, using shorthand argument names:
+array.sorted { return $0 < $1 }
+//As the last parameter, with an implied return value:
+array.sorted { $0 < $1 }
+//As the last parameter, as a reference to an existing function:
+array.sorted(by: <)
+//As a function parameter with explicit capture semantics:
+array.sorted(by: { (item1: Int, item2: Int) -> Bool in return item1 < item2 })
+
